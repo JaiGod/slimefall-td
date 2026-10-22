@@ -1,0 +1,8 @@
+{
+  "appId": "io.github.jaineil32624.slimefall",
+  "appName": "Slimefall TD",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "android": { "backgroundColor": "#0f1a14" },
+  "ios": { "backgroundColor": "#0f1a14", "contentInset": "never" }
+}

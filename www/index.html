@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Slimefall TD</title>
+  <meta name="description" content="Slimefall TD — a free, original tower defense game. 28 towers, 420 upgrades, heroes, bosses, roguelike Expeditions and more." />
+  <meta name="theme-color" content="#14532d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="loading"><div class="spinner">🟢</div><p>Loading Slimefall…</p></div>
+  <div id="app">
+    <section id="screen-menu" class="screen active"></section>
+    <section id="screen-game" class="screen"></section>
+  </div>
+  <div id="rotate">📱↻<p>Rotate your device for the best experience</p></div>
+  <div id="modal-root"></div>
+  <div id="toasts"></div>
+  <noscript>Slimefall needs JavaScript enabled.</noscript>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

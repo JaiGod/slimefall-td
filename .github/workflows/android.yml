@@ -1,0 +1,77 @@
+name: 📱 Android (APK + Play Store AAB)
+
+# Runs on every version tag (v1.2.3) and manually from the Actions tab.
+# Without signing secrets you get an installable DEBUG apk.
+# Add these repo secrets to also get a SIGNED release APK + AAB for Google Play:
+#   ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, ANDROID_KEY_PASSWORD
+on:
+  push: { tags: ['v*'] }
+  workflow_dispatch:
+
+permissions: { contents: write }
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - uses: android-actions/setup-android@v3
+
+      - name: 📦 Install Capacitor
+        run: npm install --no-save --no-audit --no-fund @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+
+      - name: 🏗️ Generate Android project
+        run: npx cap add android
+
+      - name: 🔄 Landscape lock
+        run: sed -i 's/<activity/<activity android:screenOrientation="sensorLandscape"/' android/app/src/main/AndroidManifest.xml
+
+      - name: 🎨 App icons & splash
+        run: npx --yes @capacitor/assets@3 generate --android --assetPath resources
+        continue-on-error: true
+
+      - name: 🔁 Sync web assets
+        run: npx cap sync android
+
+      - name: 🔨 Build debug APK
+        working-directory: android
+        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon
+
+      - name: 🔐 Build signed release APK + AAB
+        if: env.HAS_KEY == 'true'
+        working-directory: android
+        env:
+          KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KS_B64" | base64 -d > release.jks
+          ./gradlew assembleRelease bundleRelease --no-daemon
+          BT=$(ls -d $ANDROID_HOME/build-tools/* | sort -V | tail -1)
+          $BT/zipalign -p -f 4 app/build/outputs/apk/release/app-release-unsigned.apk aligned.apk
+          $BT/apksigner sign --ks release.jks --ks-pass env:KS_PASS --ks-key-alias "$KEY_ALIAS" --key-pass env:KEY_PASS --out app-release.apk aligned.apk
+          jarsigner -keystore release.jks -storepass "$KS_PASS" -keypass "$KEY_PASS" app/build/outputs/bundle/release/app-release.aab "$KEY_ALIAS"
+          cp app/build/outputs/bundle/release/app-release.aab app-release.aab
+
+      - name: 🏷️ Collect artifacts
+        run: |
+          mkdir -p out
+          cp android/app/build/outputs/apk/debug/app-debug.apk out/Slimefall-TD-android.apk
+          [ -f android/app-release.apk ] && cp android/app-release.apk out/Slimefall-TD-android-release.apk || true
+          [ -f android/app-release.aab ] && cp android/app-release.aab out/Slimefall-TD-playstore.aab || true
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        with: { name: slimefall-android, path: out/* }
+
+      - name: 🚀 Attach to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with: { files: out/* }

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Slimefall TD — Free Tower Defense Game</title>
+  <meta name="description" content="Slimefall TD is a free, original tower defense game. 28 towers, 420 upgrades, 6 heroes, 22 maps, bosses, roguelike Expeditions, daily challenges and more. Play in your browser or install on Android, Windows, macOS and Linux." />
+  <meta property="og:title" content="Slimefall TD 🟢 Free Tower Defense" />
+  <meta property="og:description" content="28 towers · 420 upgrades · bosses · roguelike runs · play free in your browser" />
+  <meta property="og:image" content="assets/banner.png" />
+  <meta name="theme-color" content="#14532d" />
+  <link rel="icon" href="play/icons/icon.svg" type="image/svg+xml" />
+  <style>
+    :root { --bg: #0b1410; --panel: #13221a; --line: #24402f; --text: #ecfdf5; --muted: #9fbfad; --accent: #4ade80; --gold: #fbbf24; }
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) { --bg: #f3fbf5; --panel: #ffffff; --line: #cfe7d6; --text: #0f2a1a; --muted: #4b6b58; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.55; }
+    a { color: var(--accent); }
+    .wrap { width: min(1120px, 100% - 32px); margin: 0 auto; }
+    header.hero { background: radial-gradient(ellipse at 50% -20%, #1f8a49 0%, #0b1410 65%); color: #ecfdf5; padding: 56px 0 40px; text-align: center; overflow: hidden; }
+    .logo { font-size: clamp(48px, 9vw, 96px); font-weight: 900; letter-spacing: -2px; line-height: .9; background: linear-gradient(180deg, #d9ffe6, #22c55e 60%, #15803d); -webkit-background-clip: text; background-clip: text; color: transparent; margin: 8px 0; }
+    .blob { font-size: 64px; display: inline-block; animation: b 1s infinite alternate ease-in-out; }
+    @keyframes b { to { transform: translateY(-14px) scale(1.08, .92); } }
+    .tag { font-size: clamp(16px, 2.4vw, 21px); color: #bfe9cf; max-width: 720px; margin: 0 auto 26px; }
+    .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border-radius: 14px; font-weight: 800; text-decoration: none; font-size: 17px; border: 2px solid transparent; transition: transform .1s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn.play { background: linear-gradient(180deg, #4ade80, #16a34a); color: #052e16; box-shadow: 0 6px 0 #0f5e2b; }
+    .btn.alt { background: rgba(255,255,255,.08); color: #ecfdf5; border-color: rgba(255,255,255,.25); }
+    .shot-main { margin: 36px auto 0; width: min(1000px, 100%); border-radius: 16px; box-shadow: 0 30px 80px rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.12); display: block; }
+    section { padding: 56px 0 8px; }
+    h2 { font-size: clamp(26px, 4vw, 36px); margin: 0 0 18px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+    .card .em { font-size: 34px; } .card h3 { margin: 6px 0; font-size: 18px; } .card p { margin: 0; color: var(--muted); font-size: 15px; }
+    .dl { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .dl a { display: flex; flex-direction: column; gap: 4px; padding: 18px; border-radius: 16px; background: var(--panel); border: 1px solid var(--line); text-decoration: none; color: var(--text); transition: border-color .15s; }
+    .dl a:hover { border-color: var(--accent); }
+    .dl b { font-size: 18px; } .dl span { font-size: 34px; } .dl small { color: var(--muted); }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }
+    .gallery img { width: 100%; border-radius: 12px; border: 1px solid var(--line); display: block; }
+    .gallery figure { margin: 0; } .gallery figcaption { font-size: 14px; color: var(--muted); padding: 6px 2px; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 26px; }
+    .stats div { background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.15); border-radius: 999px; padding: 8px 16px; font-weight: 700; }
+    details { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; margin-bottom: 8px; }
+    summary { cursor: pointer; font-weight: 700; }
+    footer { text-align: center; color: var(--muted); padding: 50px 0 40px; font-size: 14px; }
+    .steps { counter-reset: s; padding-left: 0; list-style: none; }
+    .steps li { counter-increment: s; margin: 8px 0; padding-left: 38px; position: relative; }
+    .steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #052e16; font-weight: 900; display: grid; place-items: center; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <span class="blob">🟢</span>
+      <div class="logo">Slimefall</div>
+      <p class="tag">A free, original tower defense game. Build towers, raise heroes, fuse elements and hold the line against an ocean of slimes. 🏰</p>
+      <div class="cta">
+        <a class="btn play" href="play/?music=on">▶️ Play now 🎵</a>
+        <a class="btn alt" href="play/?music=off">🔇 Play without music</a>
+        <a class="btn alt" href="#download">📲 Download the app</a>
+      </div>
+      <div class="stats"><div>🗼 28 towers</div><div>⬆️ 420 upgrades</div><div>🦸 6 heroes</div><div>🗺️ 22 maps</div><div>👑 3 bosses</div><div>🏅 35 achievements</div></div>
+      <img class="shot-main" src="assets/screenshots/gameplay.png" alt="Slimefall gameplay: towers defending a winding path from slimes" />
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="download">
+      <h2>📲 Play anywhere</h2>
+      <div class="dl">
+        <a href="play/?music=on"><span>🌐</span><b>Browser</b><small>Instant, no install. Any modern browser.</small></a>
+        <a href="#pwa"><span>📱</span><b>Install from browser</b><small>Add to Home Screen (Android, iPhone, desktop). Works offline.</small></a>
+        <a href="https://github.com/jaineil32624/slimefall-td/releases/latest"><span>🤖</span><b>Android APK</b><small>Download <code>Slimefall-TD-android.apk</code> from Releases.</small></a>
+        <a href="https://github.com/jaineil32624/slimefall-td/releases/latest"><span>🪟</span><b>Windows</b><small>Installer &amp; portable <code>.exe</code>.</small></a>
+        <a href="https://github.com/jaineil32624/slimefall-td/releases/latest"><span>🍎</span><b>macOS</b><small><code>.dmg</code> (right-click → Open the first time).</small></a>
+        <a href="https://github.com/jaineil32624/slimefall-td/releases/latest"><span>🐧</span><b>Linux</b><small><code>.AppImage</code>. chmod +x and run.</small></a>
+      </div>
+      <div class="card" id="pwa" style="margin-top:14px">
+        <h3>📱 Install as an app in 10 seconds (no store needed)</h3>
+        <ol class="steps">
+          <li><b>Android (Chrome):</b> open <a href="play/">the game</a> → ⋮ menu → <b>Install app</b> / <b>Add to Home screen</b>.</li>
+          <li><b>iPhone / iPad (Safari):</b> open <a href="play/">the game</a> → Share ⬆️ → <b>Add to Home Screen</b>.</li>
+          <li><b>Windows / Mac (Chrome or Edge):</b> click the ⊕ install icon in the address bar.</li>
+        </ol>
+        <p>It runs fullscreen, landscape, and fully offline after the first launch. 🚀</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>✨ What's inside</h2>
+      <div class="grid">
+        <div class="card"><div class="em">🗼</div><h3>28 towers, 420 upgrades</h3><p>3 paths × 5 tiers each, with a "Triad" crosspath rule: up to 7 tiers total, one path to tier 3+.</p></div>
+        <div class="card"><div class="em">🧬</div><h3>Tower fusion</h3><p>Put Frost next to Ember and get a Steam Geyser. Tesla + Prism = Stormlens. 7 secret fusions.</p></div>
+        <div class="card"><div class="em">🦸</div><h3>6 heroes</h3><p>Level 1→20 mid-game with unique abilities: a ranger, a mad scientist, a chef, a stargazer…</p></div>
+        <div class="card"><div class="em">👑</div><h3>Multi-phase bosses</h3><p>Hydra Bloom, Chrono Slime and the Abyss King shield up, warp time and summon minions.</p></div>
+        <div class="card"><div class="em">🧭</div><h3>Roguelike Expeditions</h3><p>Random maps, a random tower draft, relic rewards and escalating curses.</p></div>
+        <div class="card"><div class="em">⛈️</div><h3>Dynamic weather</h3><p>Rain speeds slimes up, snow slows them, fog hides them, storms call down lightning.</p></div>
+        <div class="card"><div class="em">🔬</div><h3>Deep progression</h3><p>Research tree, relics, crafting, mastery, prestige, daily &amp; weekly quests, 35 achievements.</p></div>
+        <div class="card"><div class="em">🏁</div><h3>Challenge editor</h3><p>Build custom rules and share them with a link. Plus a Sandbox and a seeded Daily Challenge.</p></div>
+        <div class="card"><div class="em">🎵</div><h3>Reactive music</h3><p>Procedural soundtrack that intensifies with the action and turns sinister for bosses. Toggle anytime.</p></div>
+        <div class="card"><div class="em">🤝</div><h3>Local co-op</h3><p>Two wallets, one screen. Coordinate builds with a friend.</p></div>
+        <div class="card"><div class="em">🎃</div><h3>Seasonal events</h3><p>Gloomfest, Frostfest, Bloomtide and Sunburst, each with its own map, currency and shop.</p></div>
+        <div class="card"><div class="em">🕹️</div><h3>Secrets</h3><p>Hidden maps, easter eggs and a certain rubber duck. Try the classic code on the title screen…</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>📸 Screenshots</h2>
+      <div class="gallery">
+        <figure><img src="assets/screenshots/boss.png" alt="Boss fight" loading="lazy" /><figcaption>👑 Chrono Slime boss fight</figcaption></figure>
+        <figure><img src="assets/screenshots/upgrades.png" alt="Upgrade panel" loading="lazy" /><figcaption>⬆️ 3 upgrade paths per tower</figcaption></figure>
+        <figure><img src="assets/screenshots/world.png" alt="World map" loading="lazy" /><figcaption>🗺️ World campaign map</figcaption></figure>
+        <figure><img src="assets/screenshots/storm.png" alt="Storm weather" loading="lazy" /><figcaption>⛈️ Dynamic weather</figcaption></figure>
+        <figure><img src="assets/screenshots/title.png" alt="Title screen" loading="lazy" /><figcaption>🏠 Title screen &amp; modes</figcaption></figure>
+        <figure><img src="assets/screenshots/mobile.png" alt="Mobile" loading="lazy" /><figcaption>📱 Mobile landscape</figcaption></figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>❓ FAQ</h2>
+      <details><summary>Is it free? Any ads or microtransactions?</summary><p>100% free. No ads, no real-money purchases. Everything is earned by playing.</p></details>
+      <details><summary>Does my progress save?</summary><p>Yes, automatically on your device. Use ⚙️ Settings → Export to move your save to another device.</p></details>
+      <details><summary>How do I turn the music off?</summary><p>Use the "Play without music" button above, or ⚙️ Settings / ⏸ Pause menu in-game. Sound effects can be toggled separately.</p></details>
+      <details><summary>Is this BTD?</summary><p>No. Slimefall is an original game inspired by the depth of great tower defense games. All towers, enemies, maps, art and music are original.</p></details>
+      <details><summary>Can I contribute?</summary><p>Yes! It's open source (MIT). See <a href="https://github.com/jaineil32624/slimefall-td">GitHub</a>.</p></details>
+    </section>
+  </main>
+  <footer>Made with 💚 · <a href="https://github.com/jaineil32624/slimefall-td">GitHub</a> · MIT License</footer>
+</body>
+</html>

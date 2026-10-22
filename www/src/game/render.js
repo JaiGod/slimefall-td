@@ -54,6 +54,11 @@ function slimeSprite(color, r, kind) {
     g.stroke();
   });
 }
+const TRAIL_FX = {
+  sparkle: { size: 2.5, shape: 'circle', color: () => `hsl(${50 + Math.random() * 20},100%,${70 + Math.random() * 25}%)` },
+  hearts: { size: 9, shape: 'text', text: '♥', color: () => '#ff6fb5' },
+  fire: { size: 3.5, shape: 'circle', color: () => (Math.random() < 0.5 ? '#ff7043' : '#ffca28') },
+};
 const KIND = { shell: 'armor', crystal: 'crystal', disruptor: 'angry', titan: 'angry', royal: 'angry', colossus: 'angry', hydra: 'boss', chrono: 'boss', abyss: 'boss' };
 
 export class Renderer {
@@ -140,8 +145,12 @@ export class Renderer {
     // towers
     for (const t of g.towers) this.drawTower(t, ui.selected === t);
 
-    // projectiles
-    for (const p of g.projectiles) this.drawProj(p);
+    // projectiles (+ cosmetic trails from the shop)
+    const trail = TRAIL_FX[this.profile.trail];
+    for (const p of g.projectiles) {
+      this.drawProj(p);
+      if (trail && dt > 0 && Math.random() < 0.25) g.particles.spawn(p.x, p.y, { speed: 8, life: 0.35, size: trail.size, color: trail.color(), shape: trail.shape, text: trail.text });
+    }
 
     // mortar shells: arc from source to target
     for (const sh of g.shells) {
